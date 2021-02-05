@@ -14,7 +14,7 @@ var (
 	// logDir    = "./app.log"
 )
 
-func New(loggerConfig alc_config.LoggerConfig, skip int) *zap.Logger {
+func New(loggerConfig alc_config.LoggerConfig, skip int) (*zap.Logger, error) {
 	cfg := getZapConfig(loggerConfig.Mode)
 	// 因为我们做了一层包装，所以需要跳过一层caller
 	// 否则，日志的caller位置，始终显示的是当前logger包中的位置
@@ -22,13 +22,13 @@ func New(loggerConfig alc_config.LoggerConfig, skip int) *zap.Logger {
 	callerOption := zap.AddCallerSkip(skip)
 	logger, err := cfg.Build(callerOption)
 	if err != nil {
-		panic(err)
+		return nil,err
 	}
 	// TODO 初始化的时候，需要做这个吗？
 	defer func() {
 		logger.Sync()
 	}()
-	return logger
+	return logger, nil
 }
 func Init(loggerConfig alc_config.LoggerConfig) {
 	zapCfg := getZapConfig(loggerConfig.Mode)
