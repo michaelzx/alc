@@ -6,7 +6,7 @@ import (
 	"mime/multipart"
 )
 
-func checkFileType(files []*multipart.FileHeader, allowTypes ...FileType) error {
+func CheckFileType(files []*multipart.FileHeader, allowTypes ...FileType) error {
 	for _, file := range files {
 		f, err := file.Open()
 		if err != nil {
