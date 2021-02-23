@@ -1,7 +1,6 @@
 package alc_fs
 
 import (
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -54,10 +53,11 @@ func IsFile(path string) bool {
 }
 
 // CreateIfNotExist 目录如果不存在则创建
-func CreateIfNotExist(path string) {
+func CreateIfNotExist(path string) error {
 	if !Exists(path) {
 		if err := os.MkdirAll(path, 0755); err != nil {
-			log.Fatal(err)
+			return err
 		}
 	}
+	return nil
 }
