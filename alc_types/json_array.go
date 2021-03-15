@@ -1,6 +1,7 @@
 package alc_types
 
 import (
+	"database/sql/driver"
 	"encoding/json"
 	"errors"
 )
@@ -43,6 +44,14 @@ func (t *JsonArray) Scan(src interface{}) error {
 	}
 	*t = _t
 	return nil
+}
+func (t JsonArray) Value() (driver.Value, error) {
+	// 放到数据库里面去
+	jsonBytes, err := json.Marshal(t)
+	if err != nil {
+		return nil, err
+	}
+	return jsonBytes, nil
 }
 
 func (t JsonArray) ToStringSlice() ([]string, error) {
