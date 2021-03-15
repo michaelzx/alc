@@ -31,3 +31,12 @@ func (t JsonObj) Value() (driver.Value, error) {
 	}
 	return jsonBytes, nil
 }
+
+func (t *JsonObj) ToJsonString() (JsonString, error) {
+	jsonBytes, err := json.Marshal(t)
+	if err != nil {
+		return "null", err
+	}
+	js := JsonString(jsonBytes)
+	return js, nil
+}

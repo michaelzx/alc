@@ -1,5 +1,7 @@
 package alc_gorm
 
+var _ IPage = PageParams{}
+
 type PageParams struct {
 	PageNum  int64 `valid:"required" cn:"页码"`
 	PageSize int64 `valid:"required" cn:"页数"`

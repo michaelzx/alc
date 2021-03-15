@@ -17,3 +17,7 @@ func CheckResult(result *gorm.DB) bool {
 		return true
 	}
 }
+
+func HasUnknownError(result *gorm.DB) bool {
+	return result.Error != nil && !errors.Is(result.Error, gorm.ErrRecordNotFound)
+}

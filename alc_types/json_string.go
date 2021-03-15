@@ -2,6 +2,7 @@ package alc_types
 
 import (
 	"database/sql/driver"
+	"encoding/json"
 	"errors"
 )
 
@@ -19,5 +20,16 @@ func (t *JsonString) Scan(src interface{}) error {
 }
 
 func (t JsonString) Value() (driver.Value, error) {
-	return []byte(string(t)), nil
+	return []byte(t), nil
+}
+
+func (t JsonString) ToJsonObj() JsonObj {
+	var v JsonObj
+	_ = json.Unmarshal([]byte(t), &v)
+	return v
+}
+func (t JsonString) ToJsonArray() JsonArray {
+	var v JsonArray
+	_ = json.Unmarshal([]byte(t), &v)
+	return v
 }

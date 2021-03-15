@@ -5,6 +5,29 @@ import (
 	"errors"
 )
 
+type NilErr struct {
+}
+
+func NewNilErr() *NilErr {
+	return &NilErr{}
+}
+
+func (n NilErr) Error() string {
+	return "对象为空"
+}
+
+type TypeErr struct {
+	msg string
+}
+
+func NewTypeErr(msg string) *TypeErr {
+	return &TypeErr{msg: msg}
+}
+
+func (t TypeErr) Error() string {
+	return t.msg
+}
+
 type JsonArray []interface{}
 
 func (t *JsonArray) Scan(src interface{}) error {
@@ -20,4 +43,16 @@ func (t *JsonArray) Scan(src interface{}) error {
 	}
 	*t = _t
 	return nil
+}
+
+func (t JsonArray) ToStringSlice() ([]string, error) {
+	list := make([]string, 0, 0)
+	for _, si := range t {
+		if s, ok := si.(string); ok {
+			list = append(list, s)
+		} else {
+			return nil, NewTypeErr("不是string类型")
+		}
+	}
+	return list, nil
 }
