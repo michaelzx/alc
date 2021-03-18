@@ -1,4 +1,4 @@
-module alchemy/alc
+module github.com/michaelzx/alc
 
 go 1.16
 

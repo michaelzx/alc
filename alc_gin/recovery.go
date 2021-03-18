@@ -1,9 +1,9 @@
 package alc_gin
 
 import (
-	"alchemy/alc/alc_errs"
-	"alchemy/alc/alc_logger"
 	"github.com/gin-gonic/gin"
+	"github.com/michaelzx/alc/alc_errs"
+	"github.com/michaelzx/alc/alc_logger"
 	"go.uber.org/zap"
 )
 

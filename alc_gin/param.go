@@ -15,6 +15,7 @@ func ParamToBool(c *gin.Context, paramName string) *bool {
 	}
 	return nil
 }
+
 // TODO 待定
 // func ParamInt64(c *gin.Context, paramName string) *int64 {
 // 	str := c.Param(paramName)

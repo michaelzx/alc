@@ -1,8 +1,8 @@
 package alc_gin
 
 import (
-	"alchemy/alc/alc_lang"
 	"github.com/gin-gonic/gin"
+	"github.com/michaelzx/alc/alc_lang"
 )
 
 func GetLangTag(gc *gin.Context) alc_lang.Tag {

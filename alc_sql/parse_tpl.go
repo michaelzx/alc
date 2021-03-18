@@ -1,11 +1,11 @@
 package alc_sql
 
 import (
-	"alchemy/alc/alc_crypto"
-	"alchemy/alc/alc_reflect"
 	"bytes"
 	"fmt"
 	jsoniter "github.com/json-iterator/go"
+	"github.com/michaelzx/alc/alc_crypto"
+	"github.com/michaelzx/alc/alc_reflect"
 	"github.com/patrickmn/go-cache"
 	"reflect"
 	"regexp"

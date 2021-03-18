@@ -1,9 +1,9 @@
 package alc_logger
 
 import (
-	"alchemy/alc/alc_config"
-	"alchemy/alc/alc_fs"
 	"errors"
+	"github.com/michaelzx/alc/alc_config"
+	"github.com/michaelzx/alc/alc_fs"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"path/filepath"
@@ -22,7 +22,7 @@ func New(loggerConfig alc_config.LoggerConfig, skip int) (*zap.Logger, error) {
 	callerOption := zap.AddCallerSkip(skip)
 	logger, err := cfg.Build(callerOption)
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
 	// TODO 初始化的时候，需要做这个吗？
 	defer func() {

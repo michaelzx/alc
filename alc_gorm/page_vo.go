@@ -1,10 +1,10 @@
 package alc_gorm
 
 import (
-	"alchemy/alc/alc_reflect"
-	"alchemy/alc/alc_sql"
 	"errors"
 	"fmt"
+	"github.com/michaelzx/alc/alc_reflect"
+	"github.com/michaelzx/alc/alc_sql"
 	"gorm.io/gorm"
 	"strings"
 )

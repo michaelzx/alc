@@ -1,12 +1,12 @@
 package alc_gin
 
 import (
-	"alchemy/alc/alc_errs"
-	"alchemy/alc/alc_lang"
-	"alchemy/alc/alc_validator"
 	"errors"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
+	"github.com/michaelzx/alc/alc_errs"
+	"github.com/michaelzx/alc/alc_lang"
+	"github.com/michaelzx/alc/alc_validator"
 	"reflect"
 	"strings"
 )

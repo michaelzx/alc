@@ -1,9 +1,9 @@
 package alc_sql
 
 import (
-	"alchemy/alc/alc_config"
-	"alchemy/alc/alc_logger"
 	"fmt"
+	"github.com/michaelzx/alc/alc_config"
+	"github.com/michaelzx/alc/alc_logger"
 	"regexp"
 	"strings"
 	"testing"

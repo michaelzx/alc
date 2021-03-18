@@ -1,7 +1,7 @@
 package alc_fs
 
 import (
-	"alchemy/alc/alc_random"
+	"github.com/michaelzx/alc/alc_random"
 	"strconv"
 	"time"
 )

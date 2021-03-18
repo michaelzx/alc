@@ -1,6 +1,6 @@
 package configs
 
-import "alchemy/alc/alc_config"
+import "github.com/michaelzx/alc/alc_config"
 
 var Mysql alc_config.MysqlConfig
 

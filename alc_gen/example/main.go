@@ -1,8 +1,8 @@
 package main
 
 import (
-	"alchemy/alc/alc_gen"
-	"alchemy/alc/alc_gen/example/configs"
+	"github.com/michaelzx/alc/alc_gen"
+	"github.com/michaelzx/alc/alc_gen/example/configs"
 )
 
 func main() {

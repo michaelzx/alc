@@ -1,7 +1,7 @@
 package alc_logger
 
 import (
-	"alchemy/alc/alc_config"
+	"github.com/michaelzx/alc/alc_config"
 	"testing"
 )
 

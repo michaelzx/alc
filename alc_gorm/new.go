@@ -1,9 +1,9 @@
 package alc_gorm
 
 import (
-	"alchemy/alc/alc_config"
-	"alchemy/alc/alc_errs"
 	"fmt"
+	"github.com/michaelzx/alc/alc_config"
+	"github.com/michaelzx/alc/alc_errs"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

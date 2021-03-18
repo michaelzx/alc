@@ -2,7 +2,7 @@ package alc_fs
 
 //
 // import (
-// 	"alchemy/alc/alc_errs"
+// 	"github.com/michaelzx/alc/alc_errs"
 // 	"errors"
 // 	"io"
 // 	"mime/multipart"

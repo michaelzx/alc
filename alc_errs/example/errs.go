@@ -1,6 +1,6 @@
 package example
 
-import "alchemy/alc/alc_errs"
+import "github.com/michaelzx/alc/alc_errs"
 
 var (
 	DataNotFound   = alc_errs.NewBadRequest(10001, "数据不存在")

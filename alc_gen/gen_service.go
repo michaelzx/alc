@@ -1,10 +1,10 @@
 package alc_gen
 
 import (
-	"alchemy/alc/alc_fs"
-	"alchemy/alc/alc_print"
 	"bytes"
 	"fmt"
+	"github.com/michaelzx/alc/alc_fs"
+	"github.com/michaelzx/alc/alc_print"
 	"github.com/pkg/errors"
 	"go/format"
 	"io/ioutil"

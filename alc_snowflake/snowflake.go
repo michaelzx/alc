@@ -1,8 +1,8 @@
 package alc_snowflake
 
 import (
-	"alchemy/alc/alc_errs"
 	"github.com/bwmarrin/snowflake"
+	"github.com/michaelzx/alc/alc_errs"
 )
 
 func NewNode(number int64) (node *snowflake.Node, err error) {

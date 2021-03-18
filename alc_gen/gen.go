@@ -1,15 +1,15 @@
 package alc_gen
 
 import (
-	"alchemy/alc/alc_arrays"
-	"alchemy/alc/alc_config"
-	"alchemy/alc/alc_fs"
-	"alchemy/alc/alc_gen/db_meta"
 	"database/sql"
 	"errors"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jimsmart/schema"
+	"github.com/michaelzx/alc/alc_arrays"
+	"github.com/michaelzx/alc/alc_config"
+	"github.com/michaelzx/alc/alc_fs"
+	"github.com/michaelzx/alc/alc_gen/db_meta"
 	"log"
 	"os"
 	"strings"
@@ -26,7 +26,7 @@ type TableMeta struct {
 }
 
 type Generator struct {
-	DbCfg alc_config.MysqlConfig
+	DbCfg               alc_config.MysqlConfig
 	TypePackage         string
 	Tables              []string
 	OutDir              string
