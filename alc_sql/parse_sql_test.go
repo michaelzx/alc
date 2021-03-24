@@ -56,8 +56,10 @@ func TestNewResolver(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(sqlStr)
-	fmt.Println(sqlParams)
+	fmt.Println("****************************************ParseTpl")
+	fmt.Printf("%#v\n", sqlStr)
+	fmt.Printf("%#v\n", sqlParams)
+	fmt.Println("****************************************ParseTpl")
 }
 
 var params = SdsDocParams{

@@ -92,7 +92,20 @@ func ParseTpl(tplStr string, params interface{}) (sqlStr string, sqlParams []int
 					err = NewErr(tplParam.Full + "超出最大长度")
 					return
 				}
-				sqlParams = append(sqlParams, rv.Index(idx))
+				paramValue := rv.Index(idx)
+				switch paramValue.Kind() {
+				case reflect.String:
+					sqlParams = append(sqlParams, paramValue.String())
+				case reflect.Int, reflect.Int8, reflect.Int32, reflect.Int64:
+					sqlParams = append(sqlParams, paramValue.Int())
+				case reflect.Uint, reflect.Uint8, reflect.Uint32, reflect.Uint64:
+					sqlParams = append(sqlParams, paramValue.Uint())
+				case reflect.Bool:
+					sqlParams = append(sqlParams, paramValue.Bool())
+				default:
+					err = NewErr("@xxxx[x]不支持:" + paramValue.Kind().String())
+					return
+				}
 			} else {
 				sqlParams = append(sqlParams, v)
 			}
@@ -116,7 +129,20 @@ func ParseTpl(tplStr string, params interface{}) (sqlStr string, sqlParams []int
 					err = NewErr(tplParam.Full + "超出最大长度")
 					return
 				}
-				sqlParams = append(sqlParams, rv.Index(idx))
+				paramValue := rv.Index(idx)
+				switch paramValue.Kind() {
+				case reflect.String:
+					sqlParams = append(sqlParams, paramValue.String())
+				case reflect.Int, reflect.Int8, reflect.Int32, reflect.Int64:
+					sqlParams = append(sqlParams, paramValue.Int())
+				case reflect.Uint, reflect.Uint8, reflect.Uint32, reflect.Uint64:
+					sqlParams = append(sqlParams, paramValue.Uint())
+				case reflect.Bool:
+					sqlParams = append(sqlParams, paramValue.Bool())
+				default:
+					err = NewErr("@xxxx[x]不支持:" + paramValue.Kind().String())
+					return
+				}
 			} else {
 				sqlParams = append(sqlParams, v)
 			}
