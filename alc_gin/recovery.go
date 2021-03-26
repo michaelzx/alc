@@ -3,8 +3,6 @@ package alc_gin
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/michaelzx/alc/alc_errs"
-	"github.com/michaelzx/alc/alc_logger"
-	"go.uber.org/zap"
 )
 
 func RecoveryMiddleware() gin.HandlerFunc {
@@ -33,7 +31,6 @@ func RecoveryMiddleware() gin.HandlerFunc {
 				}
 				unknown := alc_errs.NewUnknown("服务器繁忙")
 				c.JSON(unknown.Status, unknown.BizErr)
-				alc_logger.Error("get error from recover", zap.Any("unknown error", err))
 				c.AbortWithStatus(unknown.Status)
 				return
 			}
