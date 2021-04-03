@@ -5,7 +5,9 @@ import (
 	"github.com/michaelzx/alc/alc_errs"
 )
 
-func RecoveryMiddleware() gin.HandlerFunc {
+type UnknownErrorHandler func(err interface{})
+
+func RecoveryMiddleware(unknownErrorHandler UnknownErrorHandler) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {
@@ -28,6 +30,9 @@ func RecoveryMiddleware() gin.HandlerFunc {
 					c.JSON(e.Status, e.BizErr)
 					c.AbortWithStatus(e.Status)
 					return
+				}
+				if unknownErrorHandler != nil {
+					unknownErrorHandler(err)
 				}
 				unknown := alc_errs.NewUnknown("服务器繁忙")
 				c.JSON(unknown.Status, unknown.BizErr)
