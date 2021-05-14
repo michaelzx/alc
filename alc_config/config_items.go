@@ -15,6 +15,7 @@ type AppConfig struct {
 	Version string // 程序中写死
 	BaseUrl string
 	CdnUrl  string
+	Theme   string
 }
 
 // 日志配置
