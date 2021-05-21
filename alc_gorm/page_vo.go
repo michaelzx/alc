@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/michaelzx/alc/alc_reflect"
 	"github.com/michaelzx/alc/alc_sql"
+	"github.com/michaelzx/alc/alc_sql_count"
 	"gorm.io/gorm"
 	"strings"
 )
@@ -39,16 +40,16 @@ func (p *PageVO) get(db *gorm.DB, sqlTpl string, params interface{}) error {
 		return err
 	}
 	// 统计总数
-	countSql := fmt.Sprintf(`select count(*) from (%s) as t`, sqlStr)
-	var total int64
-	result := db.Raw(countSql, sqlParams...).Count(&total)
-	if result.Error != nil {
-		return result.Error
+	total, err := p.getTotalCount(db, sqlStr, sqlParams)
+	if err != nil {
+		return err
 	}
+	// 计算分页参数
 	p.Pagination.Compute(total)
+	// 获取分页数据
 	pageSql := fmt.Sprintf(`%s limit %d,%d`, sqlStr, p.GetSkipRows(), p.PageSize)
 	pageSql = strings.Replace(pageSql, "\n", " ", -1)
-	result = db.Raw(pageSql, sqlParams...)
+	result := db.Raw(pageSql, sqlParams...)
 	if !CheckResult(result) {
 		return nil
 	}
@@ -57,4 +58,16 @@ func (p *PageVO) get(db *gorm.DB, sqlTpl string, params interface{}) error {
 	}
 	result.Scan(p.List)
 	return nil
+}
+
+func (p *PageVO) getTotalCount(db *gorm.DB, sqlStr string, sqlParams []interface{}) (int64, error) {
+	countSql := alc_sql_count.Convert(sqlStr)
+	paramsNum := strings.Count(countSql, "?")
+	newParams := sqlParams[len(sqlParams)-paramsNum:]
+	var total int64
+	result := db.Raw(countSql, newParams...).Count(&total)
+	if result.Error != nil {
+		return 0, result.Error
+	}
+	return total, nil
 }
