@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/michaelzx/alc/alc_config"
 	"github.com/michaelzx/alc/alc_errs"
+	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -11,6 +12,9 @@ import (
 )
 
 func NewDB(appDbCfg alc_config.MysqlConfig) (db *gorm.DB, err error) {
+	return NewDBWithLogger(appDbCfg, nil)
+}
+func NewDBWithLogger(appDbCfg alc_config.MysqlConfig, zapLogger *zap.Logger) (db *gorm.DB, err error) {
 	// loc=Local,标识跟随系统
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=true&loc=Local",
 		appDbCfg.Usr,
@@ -39,10 +43,14 @@ func NewDB(appDbCfg alc_config.MysqlConfig) (db *gorm.DB, err error) {
 		Dialector:                                nil,
 		Plugins:                                  nil,
 	}
-	if appDbCfg.Debug {
-		gormCfg.Logger = logger.Default.LogMode(logger.Info)
+	if zapLogger == nil {
+		if appDbCfg.Debug {
+			gormCfg.Logger = logger.Default.LogMode(logger.Info)
+		} else {
+			gormCfg.Logger = logger.Default.LogMode(logger.Error)
+		}
 	} else {
-		gormCfg.Logger = logger.Default.LogMode(logger.Error)
+		gormCfg.Logger = NewLogger(zapLogger)
 	}
 	db, err = gorm.Open(conn, gormCfg)
 	if err != nil {
