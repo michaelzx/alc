@@ -6,6 +6,7 @@ import (
 	"github.com/michaelzx/alc/alc_fs"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"log"
 	"path/filepath"
 )
 
@@ -60,6 +61,7 @@ func getZapConfig(mode string) zap.Config {
 	switch mode {
 	case "prod": // 生产模式 TODO 自动切割文件
 		logPath := filepath.Join(alc_fs.AppPath, "logs")
+		log.Println("log will be written to", logPath)
 		alc_fs.CreateIfNotExist(logPath)
 		Development = false
 		loggingLevel = zap.InfoLevel
