@@ -77,7 +77,14 @@ func getZapConfig(mode string) zap.Config {
 		Development = true
 		loggingLevel = zap.DebugLevel
 		Encoding = "console"
-		EncodeLevel = zapcore.LowercaseColorLevelEncoder
+		// EncodeLevel = zapcore.LowercaseColorLevelEncoder
+		EncodeLevel = func(level zapcore.Level, enc zapcore.PrimitiveArrayEncoder) {
+			s, ok := _levelToLowercaseColorString[level]
+			if !ok {
+				s = _unknownLevelColor.Add(level.String())
+			}
+			enc.AppendString(s)
+		}
 		OutputPaths = []string{"stdout"}
 		ErrorOutputPaths = []string{"stderr"}
 	default:
@@ -110,7 +117,7 @@ func getZapConfig(mode string) zap.Config {
 				enc.AppendString(cutStr(caller.FullPath(), 50))
 				funcFullName := caller.Function
 				start := strings.LastIndex(funcFullName, "/")
-				enc.AppendString(cutStr(funcFullName[start+1:], 24))
+				enc.AppendString(cutStr(funcFullName[start+1:], 30))
 			},
 			EncodeName:       zapcore.FullNameEncoder,
 			ConsoleSeparator: "  ",
