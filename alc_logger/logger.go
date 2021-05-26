@@ -2,12 +2,16 @@ package alc_logger
 
 import (
 	"errors"
+	"fmt"
 	"github.com/michaelzx/alc/alc_config"
 	"github.com/michaelzx/alc/alc_fs"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"log"
 	"path/filepath"
+	"strconv"
+	"strings"
+	"time"
 )
 
 var (
@@ -73,7 +77,7 @@ func getZapConfig(mode string) zap.Config {
 		Development = true
 		loggingLevel = zap.DebugLevel
 		Encoding = "console"
-		EncodeLevel = zapcore.CapitalColorLevelEncoder
+		EncodeLevel = zapcore.LowercaseColorLevelEncoder
 		OutputPaths = []string{"stdout"}
 		ErrorOutputPaths = []string{"stderr"}
 	default:
@@ -87,27 +91,49 @@ func getZapConfig(mode string) zap.Config {
 		Sampling:          nil,
 		Encoding:          Encoding,
 		EncoderConfig: zapcore.EncoderConfig{
-			MessageKey:       "message",
-			LevelKey:         "level",
-			TimeKey:          "time",
-			NameKey:          "name",
-			CallerKey:        "caller",
-			FunctionKey:      "func",
-			StacktraceKey:    "stacks",
-			LineEnding:       zapcore.DefaultLineEnding,
-			EncodeLevel:      EncodeLevel, // zapcore.CapitalColorLevelEncoder,
-			EncodeTime:       zapcore.ISO8601TimeEncoder,
-			EncodeDuration:   zapcore.StringDurationEncoder,
-			EncodeCaller:     customCallerEncoder,
+			MessageKey:    "message",
+			LevelKey:      "level",
+			TimeKey:       "time",
+			NameKey:       "name",
+			CallerKey:     "caller",
+			FunctionKey:   "",
+			StacktraceKey: "stacks",
+			LineEnding:    zapcore.DefaultLineEnding,
+			// EncodeLevel:   zapcore.CapitalColorLevelEncoder,
+			EncodeLevel: EncodeLevel,
+			// EncodeTime:    zapcore.ISO8601TimeEncoder,
+			EncodeTime: func(time time.Time, enc zapcore.PrimitiveArrayEncoder) {
+				enc.AppendString(time.Format("06-01-02T15:04:05.000"))
+			},
+			EncodeDuration: zapcore.StringDurationEncoder,
+			EncodeCaller: func(caller zapcore.EntryCaller, enc zapcore.PrimitiveArrayEncoder) {
+				enc.AppendString(cutStr(caller.FullPath(), 50))
+				funcFullName := caller.Function
+				start := strings.LastIndex(funcFullName, "/")
+				enc.AppendString(cutStr(funcFullName[start+1:], 24))
+			},
 			EncodeName:       zapcore.FullNameEncoder,
-			ConsoleSeparator: "",
+			ConsoleSeparator: "  ",
 		},
 		OutputPaths:      OutputPaths,
 		ErrorOutputPaths: ErrorOutputPaths,
 		InitialFields:    nil,
 	}
 }
-
-func customCallerEncoder(caller zapcore.EntryCaller, enc zapcore.PrimitiveArrayEncoder) {
-	enc.AppendString(caller.TrimmedPath())
+func cutStr(fullPath string, maxLen int) string {
+	fullPathLen := len(fullPath)
+	switch {
+	case fullPathLen == maxLen:
+		return fullPath
+	case fullPathLen < maxLen:
+		lenStr := strconv.Itoa(maxLen)
+		return fmt.Sprintf("%"+lenStr+"s", fullPath)
+	case fullPathLen > maxLen:
+		start := fullPathLen - (maxLen - 2)
+		if start < 0 {
+			start = 0
+		}
+		return ".." + fullPath[start:]
+	}
+	return ""
 }
