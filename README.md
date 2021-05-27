@@ -7,4 +7,5 @@
 - [x] 增加：命令行颜色基础库 `alc_color`
 - [x] alc_gorm：增加新方法 `NewDBWithLogger(appDbCfg alc_config.MysqlConfig, zapLogger *zap.Logger)` ，替换内置日志
 - [x] alc_logger：优化日志输出，尽量做到对齐
+- [X] alc_gin：增加中间件 ZapLogger、ZapRecovery，以便统一日志输出
 
