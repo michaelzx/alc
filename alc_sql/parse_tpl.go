@@ -36,9 +36,6 @@ func ParseTpl(tplStr string, params interface{}) (sqlStr string, sqlParams []int
 	// 如果cache存在，则直接返回
 	// ****************************************************
 	cacheKey := tplMd5 + "-" + alc_crypto.Md5(fmt.Sprintf("%#v", params))
-	fmt.Println("****************************************************")
-	fmt.Println(cacheKey)
-	fmt.Println("****************************************************")
 	tplCache, found := tplCaches.Get(cacheKey)
 	if found {
 		if c, exists := tplCache.(TplCache); exists {
