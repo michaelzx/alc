@@ -1,4 +1,4 @@
-package db_meta
+package alc_gen
 
 import (
 	"strings"
@@ -41,12 +41,12 @@ var specialName = map[string]bool{
 	// "XML":   true,
 }
 
-// StructName formats a string as a struct key
+// structName formats a string as a struct key
 //
 // Example:
-// 	StructName("foo_id")
+// 	structName("foo_id")
 // Output: FooID
-func StructName(name string) string {
+func structName(name string) string {
 	// Fast path for simple cases: "_" and all lowercase.
 	if name == "_" {
 		return name

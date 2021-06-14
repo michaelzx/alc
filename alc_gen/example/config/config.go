@@ -1,8 +1,6 @@
-package configs
+package config
 
-import (
-	"github.com/michaelzx/alc/alc_config"
-)
+import "github.com/michaelzx/alc/alc_config"
 
 type Config struct {
 	Mysql alc_config.MysqlConfig

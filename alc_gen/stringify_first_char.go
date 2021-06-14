@@ -1,4 +1,4 @@
-package db_meta
+package alc_gen
 
 import "strconv"
 
@@ -16,7 +16,7 @@ var intToWordMap = []string{
 }
 
 // convert first character ints to strings
-func StringifyFirstChar(str string) string {
+func stringifyFirstChar(str string) string {
 	first := str[:1]
 
 	i, err := strconv.ParseInt(first, 10, 8)

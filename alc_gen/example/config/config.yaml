@@ -1,0 +1,13 @@
+Mysql:
+  Host: 127.0.0.1
+  Port: 3306
+  DbName: alchemy
+  Usr: root
+  Psw: root
+  Debug: true
+#  MaxIdleConns: 10
+#  MaxOpenConns: 20
+#  MaxLifetime: 900
+#  MaxIdleConns: 400
+#  MaxOpenConns: 400
+#  MaxLifetime: 900

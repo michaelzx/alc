@@ -8,7 +8,7 @@ require (
 	github.com/go-playground/locales v0.13.0
 	github.com/go-playground/universal-translator v0.17.0
 	github.com/go-playground/validator/v10 v10.3.0
-	github.com/go-sql-driver/mysql v1.5.0
+	github.com/go-sql-driver/mysql v1.6.0
 	github.com/iancoleman/strcase v0.1.2
 	github.com/jimsmart/schema v0.0.6
 	github.com/jinzhu/inflection v1.0.0
@@ -20,6 +20,6 @@ require (
 	github.com/tdewolff/minify/v2 v2.9.16
 	github.com/tdewolff/parse/v2 v2.5.16 // indirect
 	go.uber.org/zap v1.16.0
-	gorm.io/driver/mysql v1.0.4
-	gorm.io/gorm v1.20.12
+	gorm.io/driver/mysql v1.1.0
+	gorm.io/gorm v1.21.9
 )

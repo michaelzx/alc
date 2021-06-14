@@ -2,41 +2,41 @@ package main
 
 import (
 	"github.com/michaelzx/alc/alc_gen"
-	"github.com/michaelzx/alc/alc_gen/example/configs"
+	"github.com/michaelzx/alc/alc_gen/example/config"
+	"log"
+	"path/filepath"
 )
 
 func main() {
-	genApiV1()
-}
-
-func genApiV1() {
-	configs.Init("configs/config.yaml")
-
-	g := alc_gen.Generator{
-		DbCfg:       configs.Mysql,
-		BasePackage: "gitee.com/zx-io/paladin-go",
-		TypePackage: "zky4/pld/alc_types",
-		Tables: []string{
-			// "admin",
-			// "team",
-			// "meta",
-			// "dict",
-		},
-		OutDir:         "internal/app",
-		PackageEnt:     "ent",
-		PackageService: "service",
-		TplEnt:         "cmd/gen-ent/ent.tpl",
-		TplService:     "cmd/gen-ent/service.tpl",
-		GenEnt:         true,
-		GenService:     true,
-		StructNameProcessor: func(structName string) string {
-			// structName = strings.TrimPrefix(structName, "Album")
-			return structName
-		},
-		FileNameProcessor: func(fileName string) string {
-			// fileName = strings.TrimPrefix(fileName, "album_")
-			return fileName
-		},
+	cfg := new(config.Config)
+	cfg.Load("./config/config.yaml")
+	rootPath, err := filepath.Abs("./")
+	if err != nil {
+		log.Fatal(err)
 	}
-	g.Gen()
+	g, err := alc_gen.New(alc_gen.Config{
+		RootPath:    rootPath,
+		RootPackage: "github.com/michaelzx/alc/alc_gen2/example",
+		DbCfg:       cfg.Mysql,
+		Tables: []string{
+			"member",
+			"team",
+			"meta",
+			"dict",
+			"module",
+			"module_data",
+			"module_model",
+			"module_model_mgr",
+			"module_node",
+			"module_allow",
+			"module_group",
+			"module_group_mapping",
+			"module_group_mapping",
+		},
+		GenModel: true,
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	g.Run()
 }

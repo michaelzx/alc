@@ -1,4 +1,4 @@
-package db_meta
+package alc_gen
 
 import (
 	"database/sql"
@@ -33,7 +33,7 @@ const (
 	// goNullBool      = "alc_types.NullBool"
 )
 
-func SqlType2GoType(c *sql.ColumnType) string {
+func sqlType2GoType(c *sql.ColumnType) string {
 	mysqlType := strings.ToLower(c.DatabaseTypeName())
 	nullable, _ := c.Nullable()
 	switch mysqlType {

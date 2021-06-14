@@ -1,7 +1,0 @@
-Mysql:
-  Host: 127.0.0.1
-  Port: 3306
-  DbName: alchemy
-  Usr: root
-  Psw: root
-  Debug: true
