@@ -2,14 +2,14 @@ package alc_config
 
 import "time"
 
-// Web服务器配置
+// WebServerConfig Web服务器配置
 type WebServerConfig struct {
 	Port            int
 	BodyLimit       int // 单位：M
 	ShutDownWaitSec int
 }
 
-// 应用全局配置
+// AppConfig 应用全局配置
 type AppConfig struct {
 	Name    string // 程序中写死
 	Version string // 程序中写死
@@ -18,21 +18,22 @@ type AppConfig struct {
 	Theme   string
 }
 
-// 日志配置
+// LoggerConfig 日志配置
 type LoggerConfig struct {
 	Mode string // prod or dev
 }
 
-// Snowflake配置
+// SnowflakeConfig Snowflake配置
 type SnowflakeConfig struct {
 	Node int64
 }
 
-// MySQL配置
+// MysqlConfig MySQL配置
 type MysqlConfig struct {
 	Host          string
 	Port          int
 	DbName        string
+	TablePrefix   string
 	Usr           string
 	Psw           string
 	MaxConnection int
@@ -42,7 +43,7 @@ type MysqlConfig struct {
 	Debug         bool
 }
 
-// Email配置
+// EmailConfig Email配置
 type EmailConfig struct {
 	From  string
 	Title string
