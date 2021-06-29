@@ -9,6 +9,6 @@ type {{.StructName}} struct { {{range .Fields}}
     {{.}}{{end}}
 }
 
-func ({{.StructName}}) TableName() string {
-    return "{{.ModelTableName}}"
-}
+// func ({{.StructName}}) TableName() string {
+//     return "{{.ModelTableName}}"
+// }
