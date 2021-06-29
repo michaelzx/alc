@@ -10,5 +10,5 @@ type {{.StructName}} struct { {{range .Fields}}
 }
 
 func ({{.StructName}}) TableName() string {
-    return "{{.TableName}}"
+    return "{{.ModelTableName}}"
 }

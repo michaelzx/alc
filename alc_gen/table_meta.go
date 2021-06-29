@@ -13,7 +13,8 @@ type ColumnComments = map[string]string
 type TableMeta struct {
 	db             *sql.DB
 	dbName         string
-	TableName      string
+	DbTableName    string
+	ModelTableName string
 	StructName     string
 	PrimaryKeys    []string
 	AutoKeys       []string
@@ -22,13 +23,15 @@ type TableMeta struct {
 	Imports        []string
 }
 
-func NewTableMeta(db *sql.DB, dbName string, tableName string) (*TableMeta, error) {
-	structName := structName(tableName)
+func NewTableMeta(db *sql.DB, dbName string, tableName string, tablePrefix string) (*TableMeta, error) {
+	modelTableName := strings.TrimPrefix(tableName, tablePrefix)
+	structName := structName(modelTableName)
 	t := &TableMeta{
-		TableName:  tableName,
-		StructName: structName,
-		db:         db,
-		dbName:     dbName,
+		DbTableName:    tableName,
+		ModelTableName: modelTableName,
+		StructName:     structName,
+		db:             db,
+		dbName:         dbName,
 	}
 	// 解析自增字段
 	err := t.parseAutoKeys()
@@ -61,7 +64,7 @@ where t.constraint_type='primary key'
 `
 
 func (t *TableMeta) parsePKs() error {
-	rows, err := t.db.Query(sqlTablePrimaryKeys, t.dbName, t.TableName)
+	rows, err := t.db.Query(sqlTablePrimaryKeys, t.dbName, t.DbTableName)
 	defer rows.Close()
 	if err != nil {
 		return nil
@@ -84,7 +87,7 @@ func (t *TableMeta) parsePKs() error {
 const sqlTableComments = `select column_name,column_comment from information_schema.columns where table_schema=? and table_name =?`
 
 func (t *TableMeta) parseComments() error {
-	rows, err := t.db.Query(sqlTableComments, t.dbName, t.TableName)
+	rows, err := t.db.Query(sqlTableComments, t.dbName, t.DbTableName)
 	defer rows.Close()
 	if err != nil {
 		return err
@@ -107,7 +110,7 @@ func (t *TableMeta) parseComments() error {
 }
 
 func (t *TableMeta) parseAutoKeys() error {
-	rows, err := t.db.Query("describe " + t.TableName)
+	rows, err := t.db.Query("describe " + t.DbTableName)
 	defer rows.Close()
 	if err != nil {
 		return err
@@ -126,7 +129,7 @@ func (t *TableMeta) parseAutoKeys() error {
 
 func (t *TableMeta) parseFields() {
 	var fields []string
-	columns, _ := schema.Table(t.db, t.TableName)
+	columns, _ := schema.Table(t.db, t.DbTableName)
 	for _, c := range columns {
 		var field = ""
 		key := c.Name()

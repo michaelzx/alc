@@ -8,6 +8,7 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
+	"gorm.io/gorm/schema"
 	"time"
 )
 
@@ -42,6 +43,13 @@ func NewDBWithLogger(appDbCfg alc_config.MysqlConfig, zapLogger *zap.Logger) (db
 		ConnPool:                                 nil,
 		Dialector:                                nil,
 		Plugins:                                  nil,
+	}
+	if appDbCfg.TablePrefix != "" {
+		// 命名策略 https://gorm.io/zh_CN/docs/gorm_config.html#%E5%91%BD%E5%90%8D%E7%AD%96%E7%95%A5
+		gormCfg.NamingStrategy = schema.NamingStrategy{
+			TablePrefix:   appDbCfg.TablePrefix, // 表名前缀，`Article` 的表名应该是 `it_articles`
+			SingularTable: true,                 // 使用单数表名，启用该选项，此时，`Article` 的表名应该是 `it_article`
+		}
 	}
 	if zapLogger == nil {
 		if appDbCfg.Debug {

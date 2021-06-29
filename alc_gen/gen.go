@@ -15,6 +15,7 @@ type Config struct {
 	RootPackage string
 	DbCfg       alc_config.MysqlConfig
 	Tables      []string
+	TablePrefix string
 	GenModel    bool
 }
 
@@ -24,6 +25,7 @@ type Gen struct {
 	dbCfg       alc_config.MysqlConfig
 	db          *sql.DB
 	tables      []*Table
+	tablePrefix string
 	logger      *zap.Logger
 	genModel    bool
 }
@@ -60,6 +62,7 @@ func New(cfg Config) (*Gen, error) {
 		db:          mysqlDB,
 		dbCfg:       cfg.DbCfg,
 		tables:      tables,
+		tablePrefix: cfg.TablePrefix,
 		logger:      logger,
 		genModel:    cfg.GenModel,
 	}, nil

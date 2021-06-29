@@ -29,7 +29,7 @@ func (t *Table) Check(g *Gen) error {
 		return err
 	}
 	t.Columns = cols
-	t.Meta, err = NewTableMeta(g.db, g.dbCfg.DbName, t.Name)
+	t.Meta, err = NewTableMeta(g.db, g.dbCfg.DbName, t.Name, g.tablePrefix)
 	if err != nil {
 		return err
 	}
@@ -61,10 +61,10 @@ func (t *Table) genModelInternal(g *Gen) error {
 		return errors.Wrap(err, "model模板加载失败"+t.Name)
 	}
 	err = tmpl.Execute(&doc, &map[string]interface{}{
-		"TableName":  t.Meta.TableName,
-		"StructName": t.Meta.StructName,
-		"Fields":     t.Meta.Fields,
-		"Imports":    t.Meta.Imports,
+		"ModelTableName": t.Meta.ModelTableName,
+		"StructName":     t.Meta.StructName,
+		"Fields":         t.Meta.Fields,
+		"Imports":        t.Meta.Imports,
 	})
 	if err != nil {
 		return errors.Wrap(err, "模板执行失败"+t.Name)

@@ -16,14 +16,14 @@ func main() {
 	}
 	g, err := alc_gen.New(alc_gen.Config{
 		RootPath:    rootPath,
-		RootPackage: "github.com/michaelzx/alc/alc_gen2/example",
+		RootPackage: "github.com/michaelzx/alc/alc_gen/example",
 		DbCfg:       cfg.Mysql,
 		Tables: []string{
-			"member",
-			"team",
-			"meta",
-			"dict",
-			"module",
+			// "member",
+			// "team",
+			// "meta",
+			// "dict",
+			// "module",
 			"module_data",
 			"module_model",
 			"module_model_mgr",
@@ -33,7 +33,8 @@ func main() {
 			"module_group_mapping",
 			"module_group_mapping",
 		},
-		GenModel: true,
+		TablePrefix: "module_",
+		GenModel:    true,
 	})
 	if err != nil {
 		log.Fatal(err)
