@@ -13,6 +13,7 @@ type ColumnComments = map[string]string
 type TableMeta struct {
 	db             *sql.DB
 	dbName         string
+	TablePrefix    string
 	DbTableName    string
 	ModelTableName string
 	StructName     string
@@ -32,6 +33,7 @@ func NewTableMeta(db *sql.DB, dbName string, tableName string, tablePrefix strin
 		StructName:     structName,
 		db:             db,
 		dbName:         dbName,
+		TablePrefix:    tablePrefix,
 	}
 	// 解析自增字段
 	err := t.parseAutoKeys()

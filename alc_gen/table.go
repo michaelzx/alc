@@ -10,6 +10,7 @@ import (
 	"go/format"
 	"io/ioutil"
 	"path/filepath"
+	"strings"
 )
 
 type Table struct {
@@ -73,7 +74,7 @@ func (t *Table) genModelInternal(g *Gen) error {
 	if err != nil {
 		return errors.Wrap(err, "格式化go文件失败"+t.Name)
 	}
-	fileName := t.Name + ".go"
+	fileName := strings.TrimPrefix(t.Name, t.Meta.TablePrefix) + ".go"
 	outPath := filepath.Join(g.rootPath, "internal", "model", "internal", fileName)
 	g.logger.Info("生成model internal:" + outPath)
 	outDir := filepath.Dir(outPath)
@@ -103,7 +104,7 @@ func (t *Table) genModel(g *Gen) error {
 	if err != nil {
 		return errors.Wrap(err, "格式化go文件失败"+t.Name)
 	}
-	fileName := t.Name + ".go"
+	fileName := strings.TrimPrefix(t.Name, t.Meta.TablePrefix) + ".go"
 	outPath := filepath.Join(g.rootPath, "internal", "model", fileName)
 	g.logger.Info("生成model:" + outPath)
 	outDir := filepath.Dir(outPath)
