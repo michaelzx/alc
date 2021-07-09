@@ -7,8 +7,7 @@ require (
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-playground/locales v0.13.0
 	github.com/go-playground/universal-translator v0.17.0
-	github.com/go-playground/validator/v10 v10.3.0
-	github.com/go-sql-driver/mysql v1.6.0
+	github.com/go-playground/validator/v10 v10.7.0
 	github.com/iancoleman/strcase v0.1.2
 	github.com/jimsmart/schema v0.0.6
 	github.com/jinzhu/inflection v1.0.0
