@@ -2,7 +2,7 @@ package alc_tpl
 
 import (
 	"bytes"
-	"github.com/michaelzx/pld/pld_fs"
+	"github.com/michaelzx/alc/alc_fs"
 	"github.com/pkg/errors"
 	"html/template"
 	"io/ioutil"
@@ -22,7 +22,7 @@ type tplCacheItem struct {
 
 func RenderHtml(themeName, tplName string, funcMap FuncMap, dataMap DataMap) (html string, err error) {
 	// 解析出正确的模板路径
-	tplPath := filepath.Join(pld_fs.WebPath, pld_fs.ThemeUrl, themeName, tplName)
+	tplPath := filepath.Join(alc_fs.WebPath, alc_fs.ThemeUrl, themeName, tplName)
 	themeDir := filepath.Join("theme", themeName)
 
 	// 加载模板引擎
