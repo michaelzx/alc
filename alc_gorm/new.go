@@ -44,8 +44,12 @@ func NewDBWithLogger(appDbCfg alc_config.MysqlConfig, zapLogger *zap.Logger) (db
 		Dialector:                                nil,
 		Plugins:                                  nil,
 	}
-	if appDbCfg.TablePrefix != "" {
-		// 命名策略 https://gorm.io/zh_CN/docs/gorm_config.html#%E5%91%BD%E5%90%8D%E7%AD%96%E7%95%A5
+	// 命名策略 https://gorm.io/zh_CN/docs/gorm_config.html#%E5%91%BD%E5%90%8D%E7%AD%96%E7%95%A5
+	if appDbCfg.TablePrefix == "" {
+		gormCfg.NamingStrategy = schema.NamingStrategy{
+			SingularTable: true,                 // 使用单数表名，启用该选项，此时，`Article` 的表名应该是 `it_article`
+		}
+	} else {
 		gormCfg.NamingStrategy = schema.NamingStrategy{
 			TablePrefix:   appDbCfg.TablePrefix, // 表名前缀，`Article` 的表名应该是 `it_articles`
 			SingularTable: true,                 // 使用单数表名，启用该选项，此时，`Article` 的表名应该是 `it_article`
