@@ -20,20 +20,11 @@ func NewDBWithZapLogger(dbCfg alc_config.MongoDBConfig, zapLogger *zap.Logger) (
 	// 构建链接字符串
 	// ------------------------------------------------------------------------------------------
 	var err error
-	// authInfo := ""
-
-	connStr := fmt.Sprintf("mongodb://%s:%s/%s", dbCfg.DbHost, dbCfg.DbPort, dbCfg.DbName)
-	qmgoConfig := &qmgo.Config{Uri: connStr, Database: dbCfg.DbName}
-	// 适配本地无须登录的场景
-	if dbCfg.DbUser != "" && dbCfg.DbPass != "" {
-		qmgoConfig.Auth = &qmgo.Credential{
-			AuthMechanism: "",
-			AuthSource:    dbCfg.DbName,
-			Username:      dbCfg.DbUser,
-			Password:      dbCfg.DbPass,
-			PasswordSet:   false,
-		}
-	}
+	connStr := fmt.Sprintf("mongodb://%s:%s/%s",
+		dbCfg.DbHost,
+		dbCfg.DbPort,
+		dbCfg.DbName,
+	)
 	// ------------------------------------------------------------------------------------------
 	// 构建clientOptions 主要是用来打印日志
 	// ------------------------------------------------------------------------------------------
@@ -60,22 +51,29 @@ func NewDBWithZapLogger(dbCfg alc_config.MongoDBConfig, zapLogger *zap.Logger) (
 	clientOptions := qmgoOpts.ClientOptions{ // <--注意：这个options.ClientOptions是qmgo自己封装的类型，里面继承了官方的
 		ClientOptions: &mgoOpts.ClientOptions{ // 这个opt是mongoDrive官方的options，我给他起别名为opt
 			Monitor: monitor,
-			Auth: &mgoOpts.Credential{
-				AuthSource: dbCfg.DbName,
-				Username:   dbCfg.DbUser,
-				Password:   dbCfg.DbPass,
-			},
 		},
 	}
 	// ------------------------------------------------------------------------------------------
 	// 创建 client & db
 	// ------------------------------------------------------------------------------------------
 	// After 10 seconds, this function will return a timeout error.
-
 	var timeout int64 = 10
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(timeout)*time.Second)
 	defer cancel()
-	dbClient, err := qmgo.NewClient(ctx, qmgoConfig, clientOptions)
+
+	cfg := &qmgo.Config{
+		Uri: connStr,
+	}
+	if dbCfg.DbName != "" && dbCfg.DbUser != "" && dbCfg.DbPass != "" {
+		credential := &qmgo.Credential{
+			AuthSource: dbCfg.DbName,
+			Username:   dbCfg.DbUser,
+			Password:   dbCfg.DbPass,
+		}
+		cfg.Auth = credential
+	}
+
+	dbClient, err := qmgo.NewClient(ctx, cfg, clientOptions)
 	if err != nil {
 		return nil, err
 	}
