@@ -52,3 +52,15 @@ type EmailConfig struct {
 	Usr   string
 	Psw   string
 }
+
+// MongoDBConfig MongoDB配置
+type MongoDBConfig struct {
+	DbHost       string
+	DbPort       string
+	DbName       string
+	DbUser       string
+	DbPass       string
+	CmdLog       bool // 是否启用 数据库请求发送的命令日志
+	SucceededLog bool // 是否启用 数据库请求响应的成功日志
+	FailedLog    bool // 是否启用 数据库请求响应的失败日志
+}

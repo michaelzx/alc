@@ -15,10 +15,12 @@ require (
 	github.com/json-iterator/go v1.1.10
 	github.com/mattn/go-sqlite3 v2.0.1+incompatible // indirect
 	github.com/patrickmn/go-cache v2.1.0+incompatible
-	github.com/pkg/errors v0.8.1
+	github.com/pkg/errors v0.9.1
+	github.com/qiniu/qmgo v1.0.6
 	github.com/spf13/viper v1.7.1
 	github.com/tdewolff/minify/v2 v2.9.16
 	github.com/tdewolff/parse/v2 v2.5.16 // indirect
+	go.mongodb.org/mongo-driver v1.8.3
 	go.uber.org/zap v1.16.0
 	golang.org/x/net v0.0.0-20200602114024-627f9648deb9 // indirect
 	golang.org/x/sys v0.0.0-20200929083018-4d22bbb62b3c // indirect
