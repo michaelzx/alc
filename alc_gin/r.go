@@ -5,6 +5,12 @@ import (
 	"net/http"
 )
 
+type Result struct {
+	Code int         `json:"code"`
+	Msg  string      `json:"msg"`
+	Data interface{} `json:"data"`
+}
+
 func RJson(c *gin.Context, v interface{}) {
 	c.JSON(http.StatusOK, v)
 }
@@ -19,3 +25,25 @@ func RHtml(gc *gin.Context, htmlStr string) {
 }
 
 type Map map[string]interface{}
+
+func RJsonSuccess(c *gin.Context, data interface{}) {
+	c.JSON(http.StatusOK, &Result{
+		Code: 0,
+		Msg:  "success",
+		Data: data,
+	})
+}
+func RJsonError(c *gin.Context, errCode int, errMsg string) {
+	c.JSON(http.StatusOK, &Result{
+		Code: errCode,
+		Msg:  errMsg,
+		Data: nil,
+	})
+}
+func RJsonResult(c *gin.Context, errCode int, errMsg string, data interface{}) {
+	c.JSON(http.StatusOK, &Result{
+		Code: errCode,
+		Msg:  errMsg,
+		Data: data,
+	})
+}
