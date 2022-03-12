@@ -84,8 +84,5 @@ func NewDBWithZapLogger(dbCfg alc_config.MongoDBConfig, zapLogger *zap.Logger) (
 	if err != nil {
 		return nil, err
 	}
-	if err = dbClient.Ping(timeout); err != nil {
-		return nil, err
-	}
 	return dbClient.Database(dbCfg.DbName), nil
 }
