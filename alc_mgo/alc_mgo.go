@@ -27,15 +27,17 @@ func Page(query qmgo.QueryI, page alc_gorm.PageParams, list interface{}) (pageVo
 	}
 	return
 }
-func PageA()  {
 
-}
 func DRegex(pattern, option string) bson.D {
 	return bson.D{{"$regex", primitive.Regex{Pattern: pattern, Options: option}}}
 }
 
 func DLike(words string) bson.D {
 	return DRegex(ReplaceRegexSymbol(words), "ig")
+}
+
+func DLikeStartWith(words string) bson.D {
+	return DRegex("^"+ReplaceRegexSymbol(words), "ig")
 }
 
 func ReplaceRegexSymbol(regexPattern string) string {

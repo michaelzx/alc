@@ -7,9 +7,12 @@ import (
 	"github.com/michaelzx/alc/alc_config"
 	"github.com/qiniu/qmgo"
 	qmgoOpts "github.com/qiniu/qmgo/options"
+	"github.com/shopspring/decimal"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/event"
 	mgoOpts "go.mongodb.org/mongo-driver/mongo/options"
 	"go.uber.org/zap"
+	"reflect"
 	"time"
 )
 
@@ -51,6 +54,10 @@ func NewDBWithZapLogger(dbCfg alc_config.MongoDBConfig, zapLogger *zap.Logger) (
 	clientOptions := qmgoOpts.ClientOptions{ // <--注意：这个options.ClientOptions是qmgo自己封装的类型，里面继承了官方的
 		ClientOptions: &mgoOpts.ClientOptions{ // 这个opt是mongoDrive官方的options，我给他起别名为opt
 			Monitor: monitor,
+			Registry: bson.NewRegistryBuilder().
+				RegisterTypeDecoder(reflect.TypeOf(decimal.Decimal{}), DecimalString{}).
+				RegisterTypeEncoder(reflect.TypeOf(decimal.Decimal{}), DecimalString{}).
+				Build(),
 		},
 	}
 	// ------------------------------------------------------------------------------------------
@@ -75,9 +82,6 @@ func NewDBWithZapLogger(dbCfg alc_config.MongoDBConfig, zapLogger *zap.Logger) (
 
 	dbClient, err := qmgo.NewClient(ctx, cfg, clientOptions)
 	if err != nil {
-		return nil, err
-	}
-	if err = dbClient.Ping(timeout); err != nil {
 		return nil, err
 	}
 	return dbClient.Database(dbCfg.DbName), nil
