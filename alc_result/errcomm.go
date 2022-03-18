@@ -7,13 +7,19 @@ func (e *CommonErr) Error() string {
 }
 
 func (e *CommonErr) Prefix(s string) *CommonErr {
-	e.Msg = s + e.Msg
-	return e
+	return &CommonErr{
+		e.Code,
+		s + e.Msg,
+		e.Data,
+	}
 }
 
 func (e *CommonErr) Suffix(s string) *CommonErr {
-	e.Msg = e.Msg + s
-	return e
+	return &CommonErr{
+		e.Code,
+		e.Msg + s,
+		e.Data,
+	}
 }
 
 func NewCommonErr(code int, msg string) *CommonErr {
