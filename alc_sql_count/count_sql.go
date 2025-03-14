@@ -1,15 +1,25 @@
 package alc_sql_count
 
 import (
-	"strings"
+	"regexp"
 )
 
 const (
-	from1          = 'f'
-	from2          = 'r'
-	from3          = 'o'
-	from4          = 'm'
-	countSqlPrefix = "select count(*) "
+	from1 = 'f'
+	from2 = 'r'
+	from3 = 'o'
+	from4 = 'm'
+
+	from11 = 'F'
+	from21 = 'R'
+	from31 = 'O'
+	from41 = 'M'
+
+	countSqlPrefix = "select count(*) as total "
+)
+
+var (
+	orderByReg = regexp.MustCompile(`(?i)order +by`)
 )
 
 func getFromIdx(sub []rune) int {
@@ -17,16 +27,16 @@ func getFromIdx(sub []rune) int {
 		return -1
 	}
 	for i := 0; i <= len(sub)-4; i++ {
-		if sub[i] != from1 {
+		if sub[i] != from1 && sub[i] != from11 {
 			continue
 		}
-		if sub[i+1] != from2 {
+		if sub[i+1] != from2 && sub[i+1] != from21 {
 			continue
 		}
-		if sub[i+2] != from3 {
+		if sub[i+2] != from3 && sub[i+2] != from31 {
 			continue
 		}
-		if sub[i+3] != from4 {
+		if sub[i+3] != from4 && sub[i+3] != from41 {
 			continue
 		}
 		return i
@@ -34,7 +44,7 @@ func getFromIdx(sub []rune) int {
 	return -1
 }
 func Convert(originSql string) string {
-	letters := []rune(strings.ToLower(originSql))
+	letters := []rune(originSql)
 	levelNow := 0
 	rootGroups := make([][2]int, 0)
 	for i, letter := range letters {
@@ -76,5 +86,6 @@ func Convert(originSql string) string {
 		}
 	}
 	countSql := countSqlPrefix + string(letters[fromPos:])
+	countSql = orderByReg.Split(countSql, -1)[0]
 	return countSql
 }

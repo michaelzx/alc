@@ -62,10 +62,13 @@ func (p *PageVO) get(db *gorm.DB, sqlTpl string, params interface{}) error {
 
 func (p *PageVO) getTotalCount(db *gorm.DB, sqlStr string, sqlParams []interface{}) (int64, error) {
 	countSql := alc_sql_count.Convert(sqlStr)
+	if strings.Contains(strings.ToUpper(countSql), "GROUP BY") {
+		countSql = fmt.Sprintf("select count(1) as total from (%s) as t", countSql)
+	}
 	paramsNum := strings.Count(countSql, "?")
 	newParams := sqlParams[len(sqlParams)-paramsNum:]
 	var total int64
-	result := db.Raw(countSql, newParams...).Count(&total)
+	result := db.Raw(countSql, newParams...).Scan(&total)
 	if result.Error != nil {
 		return 0, result.Error
 	}
