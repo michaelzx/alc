@@ -1,12 +1,13 @@
 package alc_mgo
 
 import (
+	"strings"
+
 	"github.com/michaelzx/alc/alc_gorm"
 	"github.com/qiniu/qmgo"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-	"strings"
 )
 
 func Page(query qmgo.QueryI, page alc_gorm.PageParams, list interface{}) (pageVo *alc_gorm.PageVO, err error) {
@@ -29,15 +30,15 @@ func Page(query qmgo.QueryI, page alc_gorm.PageParams, list interface{}) (pageVo
 }
 
 func DRegex(pattern, option string) bson.D {
-	return bson.D{{"$regex", primitive.Regex{Pattern: pattern, Options: option}}}
+	return bson.D{{Key: "$regex", Value: primitive.Regex{Pattern: pattern, Options: option}}}
 }
 
 func DLike(words string) bson.D {
-	return DRegex(ReplaceRegexSymbol(words), "ig")
+	return DRegex(ReplaceRegexSymbol(words), "i")
 }
 
 func DLikeStartWith(words string) bson.D {
-	return DRegex("^"+ReplaceRegexSymbol(words), "ig")
+	return DRegex("^"+ReplaceRegexSymbol(words), "i")
 }
 
 func ReplaceRegexSymbol(regexPattern string) string {
