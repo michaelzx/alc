@@ -20,7 +20,8 @@ type AppConfig struct {
 
 // LoggerConfig 日志配置
 type LoggerConfig struct {
-	Mode string // prod or dev
+	Mode     string // prod or dev
+	Encoding string // json or console
 }
 
 // SnowflakeConfig Snowflake配置
